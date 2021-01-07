@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { ReactComponent as Caret } from "../Assets/caret.svg";
 
-export default function DropdownField({ selectOptions, setSelectedOption, targetField }) {
+export default function DropdownField({
+  selectOptions,
+  setSelectedOption,
+  targetField,
+  placeholder,
+}) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(null);
 
@@ -12,11 +17,10 @@ export default function DropdownField({ selectOptions, setSelectedOption, target
         onClick={() => setOpen(!open)}
       >
         {selected === null ? (
-          <p className="text-gray-400">Choose a country</p>
+          <p className="text-gray-400">{placeholder}</p>
         ) : (
           <p className="text-gray-800">{selected}</p>
         )}
-
         <button className="cursor-pointer focus:outline-none" onClick={() => setOpen(!open)}>
           <Caret className="w-full h-1/2" />
         </button>

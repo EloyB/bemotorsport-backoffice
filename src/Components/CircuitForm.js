@@ -34,6 +34,7 @@ export default function CircuitForm() {
         <DropdownField
           selectOptions={countries}
           setSelectedOption={(item) => setCircuit({ ...circuit, country: item })}
+          placeholder="Choose a country"
         />
         <InputField
           placeholder="City name"
@@ -41,12 +42,7 @@ export default function CircuitForm() {
           value={circuit.city}
         />
         <div className="w-full flex space-x-4 rounded">
-          <DocumentInput
-            title="Choose PDF"
-            accept=".pdf"
-            onFileChange={(val) => setPdfFile(val)}
-            hasFile={pdfFile ? true : false}
-          />
+          <DocumentInput title="Choose PDF" accept=".pdf" onFileChange={(val) => setPdfFile(val)} />
           <DocumentInput
             title="Choose Image"
             accept="image/*"
