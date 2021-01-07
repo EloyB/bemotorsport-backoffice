@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import { ReactComponent as DropIcon } from "../Assets/filedrop.svg";
 import { ReactComponent as CheckIcon } from "../Assets/check.svg";
 
-export default function DocumentInput({ title, onFileChange, accept }) {
+export default function DocumentInput({ title, onFileChange, accept, hasFile }) {
   const [inputTitle, setInputTitle] = useState(title);
-  const [file, setFile] = useState();
 
   const handleOnChange = (e) => {
-    setFile(e.target.files);
     onFileChange(e.target.files);
     setInputTitle("File accepted!");
   };
@@ -21,7 +19,7 @@ export default function DocumentInput({ title, onFileChange, accept }) {
         accept={accept}
       />
       <div className="w-full text-center">
-        {file ? <CheckIcon className="m-auto" /> : <DropIcon className="m-auto" />}
+        {hasFile ? <CheckIcon className="m-auto" /> : <DropIcon className="m-auto" />}
         <p className="text-gray-400">{inputTitle}</p>
       </div>
     </div>
