@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { useStateValue } from "./StateProvider";
 import { useEffect } from "react";
 import { db } from "./firebase";
+import Trackdays from "./Pages/Trackdays";
 
 function App() {
   const [{ circuits }, dispatch] = useStateValue();
@@ -37,7 +38,7 @@ function App() {
               <Circuits />
             </Route>
             <Route path="/">
-              <Circuits />
+              <Trackdays />
             </Route>
           </Switch>
         </div>

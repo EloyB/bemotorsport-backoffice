@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { ReactComponent as Caret } from "../Assets/caret.svg";
 
-export default function DropdownField({ selectOptions, setSelectedOption }) {
+export default function DropdownField({ selectOptions, setSelectedOption, placeholder }) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(null);
 
   return (
     <div className="relative">
       <div className="p-2 bg-gray-50 w-full rounded px-4 flex justify-between items-center" onClick={() => setOpen(!open)}>
-        {selected === null ? <p className="text-gray-400">Choose a country</p> : <p className="text-gray-800">{selected}</p>}
+        {selected === null ? <p className="text-gray-400">{placeholder}</p> : <p className="text-gray-800">{selected}</p>}
 
         <button className="cursor-pointer focus:outline-none" onClick={() => setOpen(!open)}>
           <Caret className="w-full h-1/2" />
@@ -25,7 +25,7 @@ export default function DropdownField({ selectOptions, setSelectedOption }) {
               setOpen(false);
             }}
           >
-            {item}
+            {JSON.stringify(item)}
           </p>
         ))}
       </div>
