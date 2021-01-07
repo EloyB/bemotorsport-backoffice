@@ -1,24 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Navigation from "./Components/Navigation";
+import Circuits from "./Pages/Circuits";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { useStateValue } from "./StateProvider";
+import { useEffect } from "react";
+import { db } from "./firebase";
 
 function App() {
+  const [{ circuits }, dispatch] = useStateValue();
+
+  useEffect(() => {
+    const getCircuits = () => {
+      db.collection("circuits")
+        .get()
+        .then((snapshot) => {
+          let circuitsList = [];
+          snapshot.forEach((doc) => {
+            circuitsList.push({ id: doc.id, ...doc.data() });
+          });
+          dispatch({
+            type: "SET_CIRCUITS",
+            list: circuitsList,
+          });
+        });
+    };
+    getCircuits();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Navigation />
+        <div className="m-4 lg:max-w-4xl lg:m-auto xl:max-w-5xl 2xl:max-w-screen-xl">
+          <Switch>
+            <Route path="/circuits">
+              <Circuits />
+            </Route>
+            <Route path="/">
+              <Circuits />
+            </Route>
+          </Switch>
+        </div>
+      </div>
+    </Router>
   );
 }
 
