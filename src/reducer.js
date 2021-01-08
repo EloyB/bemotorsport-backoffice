@@ -30,10 +30,16 @@ const reducer = (state, action) => {
       };
 
     case "DELETE_CIRCUIT":
-      const index = state.circuits.findIndex((x) => x.id === action.id);
+      const circuitIndex = state.circuits.findIndex((x) => x.id === action.id);
       const updatedCircuits = [...state.circuits];
-      updatedCircuits.splice(index, 1);
+      updatedCircuits.splice(circuitIndex, 1);
       return { ...state, circuits: updatedCircuits };
+
+    case "DELETE_TRACKDAY":
+      const trackdayIndex = state.trackdays.findIndex((x) => x.id === action.id);
+      const updatedTrackdays = [...state.trackdays];
+      updatedTrackdays.splice(trackdayIndex, 1);
+      return { ...state, trackdays: updatedTrackdays };
 
     default:
       return { ...state };

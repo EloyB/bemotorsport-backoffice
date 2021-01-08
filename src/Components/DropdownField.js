@@ -36,7 +36,7 @@ export default function DropdownField({
             className="hover:bg-gray-100 cursor-pointer px-2 rounded py-1"
             onClick={() => {
               setSelectedOption(item);
-              setSelected(item[targetField]);
+              setSelected(targetField ? item[targetField] : item);
               setOpen(false);
             }}
           >

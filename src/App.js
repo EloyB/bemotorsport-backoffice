@@ -8,7 +8,7 @@ import { db } from "./firebase";
 import Trackdays from "./Pages/Trackdays";
 
 function App() {
-  const [{ circuits }, dispatch] = useStateValue();
+  const [{}, dispatch] = useStateValue();
 
   useEffect(() => {
     const getCircuits = () => {

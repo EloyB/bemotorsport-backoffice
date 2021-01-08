@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useStateValue } from "../StateProvider";
+import { initialTrackday, addTrackday } from "../Data/TrackdaysData";
 import DropdownField from "./DropdownField";
-import InputField from "./InputField";
-import { db } from "../firebase";
+import DatePicker from "./DatePicker";
+import Checkbox from "./Checkbox";
+import BlueButton from "./BlueButton";
 
 export default function TrackdaysForm() {
   const [{ circuits }, dispatch] = useStateValue();
-  const [circuit, setCircuit] = useState();
-  const [date, setDate] = useState();
-  const [porsche, setPorsche] = useState();
-  const [peugot, setPeugot] = useState();
-  const [available, setAvailable] = useState(true);
-  useEffect(() => {
-    console.log(circuits);
-  }, []);
+  const [trackday, setTrackday] = useState({ ...initialTrackday });
+
+  const handleAddTrackday = () => {
+    addTrackday(trackday).then((res) => dispatch({ type: "ADD_TRACKDAY", item: res }));
+    setTrackday({ ...initialTrackday });
+  };
 
   return (
     <div className="bg-white rounded shadow-md p-4 md:w-1/2 md:my-4">
@@ -21,38 +21,29 @@ export default function TrackdaysForm() {
       <div className="my-3 space-y-3">
         <DropdownField
           selectOptions={circuits}
-          setSelectedOption={(item) => setCircuit({ ...circuit })}
+          setSelectedOption={(item) => setTrackday({ ...trackday, circuit: item })}
           placeholder="Choose a circuit"
+          targetField="name"
         />
-        <div className="w-full flex space-x-4">
-          <div className="radio">
-            <label>
-              <input type="checkbox" value="porsche" />
-              Porsche
-            </label>
-          </div>
-          <div className="radio">
-            <label>
-              <input type="checkbox" value="peugot" />
-              Peugot
-            </label>
-          </div>
-          <div className="checkbox">
-            <label>
-              <input
-                type="checkbox"
-                value="available"
-                checked={available}
-                onChange={(e) => setAvailable(e.target.checked)}
-              />
-              Available
-            </label>
-          </div>
+        <DatePicker onChange={(value) => setTrackday({ ...trackday, date: value })} />
+        <div className="px-2 space-y-3 sm:flex sm:space-y-0 sm:space-x-4">
+          <Checkbox
+            label="Available"
+            value={trackday.available}
+            onChange={() => setTrackday({ ...trackday, available: !trackday.available })}
+          />
+          <Checkbox
+            label="Porsche"
+            value={trackday.porsche}
+            onChange={() => setTrackday({ ...trackday, porsche: !trackday.porsche })}
+          />
+          <Checkbox
+            label="Peugot"
+            value={trackday.peugeot}
+            onChange={() => setTrackday({ ...trackday, peugeot: !trackday.peugeot })}
+          />
         </div>
-        <div>
-          <label htmlFor="date">Date: </label>
-          <input type="date" id="date" name="date" />
-        </div>
+        <BlueButton text="Add Trackday" onClick={handleAddTrackday} />
       </div>
     </div>
   );

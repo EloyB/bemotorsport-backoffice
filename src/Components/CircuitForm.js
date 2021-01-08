@@ -3,7 +3,6 @@ import DropdownField from "./DropdownField";
 import InputField from "./InputField";
 import BlueButton from "./BlueButton";
 import DocumentInput from "./DocumentInput";
-import { db, uploadFile } from "../firebase";
 import { useStateValue } from "../StateProvider";
 import { initialCircuit, addCircuit } from "../Data/CircuitsData";
 
@@ -16,6 +15,7 @@ export default function CircuitForm() {
   const [imageFile, setImageFile] = useState();
 
   const handleAddCircuit = () => {
+    console.log(pdfFile);
     addCircuit(circuit, pdfFile, imageFile).then((res) =>
       dispatch({ type: "ADD_CIRCUIT", item: res })
     );

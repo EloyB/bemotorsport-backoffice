@@ -8,8 +8,8 @@ const initialCircuit = {
 
 const addCircuit = (circuit, pdfFile, imageFile) => {
   var promise = new Promise((resolve, reject) => {
-    uploadFile("offertes", circuit.name + "_Offerte", pdfFile).then((url) => {
-      uploadFile("vectors", circuit.name + "_Vector", imageFile).then((vectorURL) => {
+    uploadFile("offertes", circuit.name + "_Offerte", pdfFile[0]).then((url) => {
+      uploadFile("vectors", circuit.name + "_Vector", imageFile[0]).then((vectorURL) => {
         db.collection("circuits").add({
           ...circuit,
           offerte: url,
