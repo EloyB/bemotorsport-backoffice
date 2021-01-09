@@ -11,7 +11,7 @@ export default function DropdownField({
   const [selected, setSelected] = useState(null);
 
   return (
-    <div className="relative">
+    <div className="relative h-auto">
       <div
         className="p-2 bg-gray-50 w-full rounded px-4 flex justify-between items-center"
         onClick={() => setOpen(!open)}
@@ -22,7 +22,7 @@ export default function DropdownField({
           <p className="text-gray-800">{selected}</p>
         )}
         <button className="cursor-pointer focus:outline-none" onClick={() => setOpen(!open)}>
-          <Caret className="w-full h-1/2" />
+          <Caret />
         </button>
       </div>
       <div

@@ -38,7 +38,7 @@ export default function TrackdaysForm() {
             onChange={() => setTrackday({ ...trackday, porsche: !trackday.porsche })}
           />
           <Checkbox
-            label="Peugot"
+            label="Peugeot"
             value={trackday.peugeot}
             onChange={() => setTrackday({ ...trackday, peugeot: !trackday.peugeot })}
           />

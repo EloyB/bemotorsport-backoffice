@@ -23,7 +23,7 @@ export default function CircuitForm() {
   };
 
   return (
-    <div className="bg-white rounded shadow-md p-4 md:w-1/2 md:self-start md:my-4">
+    <div className="bg-white rounded shadow-md flex flex-col p-4 md:w-1/2 md:self-start md:my-4">
       <h1 className="font-semibold text-lg">Circuit aanmaken</h1>
       <div className="my-2 space-y-3">
         <InputField

@@ -7,6 +7,7 @@ export default function DatePicker({ onChange }) {
         type="date"
         className="p-2 bg-gray-50 w-full rounded pl-4 outline-none"
         onChange={(e) => onChange(e.target.value)}
+        placeholder="Date (dd-mm-yyyy)"
       />
     </div>
   );
