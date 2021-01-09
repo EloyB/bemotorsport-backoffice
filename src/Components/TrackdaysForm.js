@@ -9,10 +9,18 @@ import BlueButton from "./BlueButton";
 export default function TrackdaysForm() {
   const [{ circuits }, dispatch] = useStateValue();
   const [trackday, setTrackday] = useState({ ...initialTrackday });
+  const [hasErrors, setHasErrors] = useState();
 
   const handleAddTrackday = () => {
-    addTrackday(trackday).then((res) => dispatch({ type: "ADD_TRACKDAY", item: res }));
-    setTrackday({ ...initialTrackday });
+    if (trackday.circuit !== null && trackday.date !== null) {
+      addTrackday(trackday).then((res) =>
+        dispatch({ type: "ADD_TRACKDAY", item: res })
+      );
+      setTrackday({ ...initialTrackday });
+      setHasErrors(false);
+    } else {
+      setHasErrors(true);
+    }
   };
 
   return (
@@ -21,29 +29,46 @@ export default function TrackdaysForm() {
       <div className="my-3 space-y-3">
         <DropdownField
           selectOptions={circuits}
-          setSelectedOption={(item) => setTrackday({ ...trackday, circuit: item })}
+          setSelectedOption={(item) =>
+            setTrackday({ ...trackday, circuit: item })
+          }
           placeholder="Choose a circuit"
           targetField="name"
         />
-        <DatePicker onChange={(value) => setTrackday({ ...trackday, date: value })} />
+        <DatePicker
+          onChange={(value) => setTrackday({ ...trackday, date: value })}
+        />
         <div className="px-2 space-y-3 sm:flex sm:space-y-0 sm:space-x-4">
           <Checkbox
             label="Available"
             value={trackday.available}
-            onChange={() => setTrackday({ ...trackday, available: !trackday.available })}
+            onChange={() =>
+              setTrackday({ ...trackday, available: !trackday.available })
+            }
           />
           <Checkbox
             label="Porsche"
             value={trackday.porsche}
-            onChange={() => setTrackday({ ...trackday, porsche: !trackday.porsche })}
+            onChange={() =>
+              setTrackday({ ...trackday, porsche: !trackday.porsche })
+            }
           />
           <Checkbox
             label="Peugeot"
             value={trackday.peugeot}
-            onChange={() => setTrackday({ ...trackday, peugeot: !trackday.peugeot })}
+            onChange={() =>
+              setTrackday({ ...trackday, peugeot: !trackday.peugeot })
+            }
           />
         </div>
         <BlueButton text="Add Trackday" onClick={handleAddTrackday} />
+        {hasErrors && (
+          <div className="rounded">
+            <p className="rounded-full py-3 px-6 text-red-500 font-semibold text-lg text-center border-2 rounded">
+              Make sure that all fields are filled in!
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
