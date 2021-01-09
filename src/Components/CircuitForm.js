@@ -6,20 +6,40 @@ import DocumentInput from "./DocumentInput";
 import { useStateValue } from "../StateProvider";
 import { initialCircuit, addCircuit } from "../Data/CircuitsData";
 
-const countries = ["Belgium", "Germany", "France", "Netherlands", "Spain", "Portugal"];
+const countries = [
+  "Belgium",
+  "Germany",
+  "France",
+  "Netherlands",
+  "Spain",
+  "Portugal",
+];
 
 export default function CircuitForm() {
   const [{ circuits }, dispatch] = useStateValue();
   const [circuit, setCircuit] = useState({ ...initialCircuit });
   const [pdfFile, setPdfFile] = useState();
   const [imageFile, setImageFile] = useState();
+  const [hasErrors, setHasErrors] = useState();
 
   const handleAddCircuit = () => {
-    console.log(pdfFile);
-    addCircuit(circuit, pdfFile, imageFile).then((res) =>
-      dispatch({ type: "ADD_CIRCUIT", item: res })
-    );
-    setCircuit({ ...initialCircuit });
+    console.log(circuit);
+    if (
+      circuit.name !== "" &&
+      circuit.country !== null &&
+      circuit.city !== "" &&
+      pdfFile !== undefined &&
+      imageFile !== undefined
+    ) {
+      console.log("fucked");
+      addCircuit(circuit, pdfFile, imageFile).then((res) =>
+        dispatch({ type: "ADD_CIRCUIT", item: res })
+      );
+      setCircuit({ ...initialCircuit });
+      setHasErrors(false);
+    } else {
+      setHasErrors(true);
+    }
   };
 
   return (
@@ -33,7 +53,9 @@ export default function CircuitForm() {
         />
         <DropdownField
           selectOptions={countries}
-          setSelectedOption={(item) => setCircuit({ ...circuit, country: item })}
+          setSelectedOption={(item) =>
+            setCircuit({ ...circuit, country: item })
+          }
           placeholder="Choose a country"
         />
         <InputField
@@ -42,7 +64,11 @@ export default function CircuitForm() {
           value={circuit.city}
         />
         <div className="w-full flex space-x-4 rounded">
-          <DocumentInput title="Choose PDF" accept=".pdf" onFileChange={(val) => setPdfFile(val)} />
+          <DocumentInput
+            title="Choose PDF"
+            accept=".pdf"
+            onFileChange={(val) => setPdfFile(val)}
+          />
           <DocumentInput
             title="Choose Image"
             accept="image/*"
@@ -50,6 +76,15 @@ export default function CircuitForm() {
           />
         </div>
         <BlueButton text="Add Circuit" onClick={handleAddCircuit} />
+        {hasErrors ? (
+          <div className="rounded">
+            <p className="rounded-full py-3 px-6 text-red-500 font-semibold text-lg text-center border-2 rounded">
+              Make sure that all fields are filled in!
+            </p>
+          </div>
+        ) : (
+          <p></p>
+        )}
       </div>
     </div>
   );
