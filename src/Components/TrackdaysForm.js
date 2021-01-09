@@ -62,14 +62,12 @@ export default function TrackdaysForm() {
           />
         </div>
         <BlueButton text="Add Trackday" onClick={handleAddTrackday} />
-        {hasErrors ? (
+        {hasErrors && (
           <div className="rounded">
             <p className="rounded-full py-3 px-6 text-red-500 font-semibold text-lg text-center border-2 rounded">
               Make sure that all fields are filled in!
             </p>
           </div>
-        ) : (
-          <p></p>
         )}
       </div>
     </div>

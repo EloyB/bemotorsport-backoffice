@@ -23,7 +23,6 @@ export default function CircuitForm() {
   const [hasErrors, setHasErrors] = useState();
 
   const handleAddCircuit = () => {
-    console.log(circuit);
     if (
       circuit.name !== "" &&
       circuit.country !== null &&
@@ -31,7 +30,6 @@ export default function CircuitForm() {
       pdfFile !== undefined &&
       imageFile !== undefined
     ) {
-      console.log("fucked");
       addCircuit(circuit, pdfFile, imageFile).then((res) =>
         dispatch({ type: "ADD_CIRCUIT", item: res })
       );
@@ -76,14 +74,12 @@ export default function CircuitForm() {
           />
         </div>
         <BlueButton text="Add Circuit" onClick={handleAddCircuit} />
-        {hasErrors ? (
+        {hasErrors && (
           <div className="rounded">
             <p className="rounded-full py-3 px-6 text-red-500 font-semibold text-lg text-center border-2 rounded">
               Make sure that all fields are filled in!
             </p>
           </div>
-        ) : (
-          <p></p>
         )}
       </div>
     </div>
