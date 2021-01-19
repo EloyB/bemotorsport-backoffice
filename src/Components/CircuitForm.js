@@ -5,39 +5,40 @@ import BlueButton from "./BlueButton";
 import DocumentInput from "./DocumentInput";
 import { useStateValue } from "../StateProvider";
 import { initialCircuit, addCircuit } from "../Data/CircuitsData";
+import Message from "./Message";
 
-const countries = [
-  "Belgium",
-  "Germany",
-  "France",
-  "Netherlands",
-  "Spain",
-  "Portugal",
-];
+const countries = ["Belgium", "Germany", "France", "Netherlands", "Spain", "Portugal"];
 
 export default function CircuitForm() {
   const [{ circuits }, dispatch] = useStateValue();
   const [circuit, setCircuit] = useState({ ...initialCircuit });
-  const [pdfFile, setPdfFile] = useState();
-  const [imageFile, setImageFile] = useState();
-  const [hasErrors, setHasErrors] = useState();
+  const [pdfFile, setPdfFile] = useState({});
+  const [imageFile, setImageFile] = useState({});
+  const [hasErrors, setHasErrors] = useState(false);
+  const [loading, setLoading] = useState();
 
   const handleAddCircuit = () => {
     if (
       circuit.name !== "" &&
       circuit.country !== null &&
       circuit.city !== "" &&
-      pdfFile !== undefined &&
-      imageFile !== undefined
+      checkHasFile(pdfFile)
     ) {
-      addCircuit(circuit, pdfFile, imageFile).then((res) =>
-        dispatch({ type: "ADD_CIRCUIT", item: res })
-      );
-      setCircuit({ ...initialCircuit });
-      setHasErrors(false);
+      setLoading(true);
+      setPdfFile({});
+      setImageFile({});
+      addCircuit(circuit, pdfFile, imageFile).then((res) => {
+        dispatch({ type: "ADD_CIRCUIT", item: res });
+        setCircuit({ ...initialCircuit });
+        setLoading(false);
+      });
     } else {
       setHasErrors(true);
     }
+  };
+
+  const checkHasFile = (object) => {
+    return Object.keys(object).length > 0;
   };
 
   return (
@@ -51,9 +52,7 @@ export default function CircuitForm() {
         />
         <DropdownField
           selectOptions={countries}
-          setSelectedOption={(item) =>
-            setCircuit({ ...circuit, country: item })
-          }
+          setSelectedOption={(item) => setCircuit({ ...circuit, country: item })}
           placeholder="Choose a country"
         />
         <InputField
@@ -66,21 +65,17 @@ export default function CircuitForm() {
             title="Choose PDF"
             accept=".pdf"
             onFileChange={(val) => setPdfFile(val)}
+            hasFile={Object.keys(pdfFile).length > 0}
           />
           <DocumentInput
             title="Choose Image"
             accept="image/*"
             onFileChange={(val) => setImageFile(val)}
+            hasFile={Object.keys(imageFile).length > 0}
           />
         </div>
-        <BlueButton text="Add Circuit" onClick={handleAddCircuit} />
-        {hasErrors && (
-          <div className="rounded">
-            <p className="rounded-full py-3 px-6 text-red-500 font-semibold text-lg text-center border-2 rounded">
-              Make sure that all fields are filled in!
-            </p>
-          </div>
-        )}
+        <BlueButton text={loading ? "Loading..." : "Add Circuit"} onClick={handleAddCircuit} />
+        {hasErrors && <Message onClose={() => setHasErrors(false)} />}
       </div>
     </div>
   );

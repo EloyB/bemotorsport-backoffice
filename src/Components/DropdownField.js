@@ -30,19 +30,30 @@ export default function DropdownField({
           open ? "block" : "hidden"
         } absolute bg-white py-4 px-2 space-y-2 w-full shadow-sm rounded z-50`}
       >
-        {selectOptions.map((item, index) => (
+        {selectOptions.length > 0 ? (
+          selectOptions.map((item, index) => (
+            <p
+              key={index}
+              className="hover:bg-gray-100 cursor-pointer px-2 rounded py-1"
+              onClick={() => {
+                setSelectedOption(item);
+                setSelected(targetField ? item[targetField] : item);
+                setOpen(false);
+              }}
+            >
+              {targetField ? item[targetField] : item}
+            </p>
+          ))
+        ) : (
           <p
-            key={index}
-            className="hover:bg-gray-100 cursor-pointer px-2 rounded py-1"
+            className="px-2 rounded py-1 text-gray-300"
             onClick={() => {
-              setSelectedOption(item);
-              setSelected(targetField ? item[targetField] : item);
               setOpen(false);
             }}
           >
-            {targetField ? item[targetField] : item}
+            No data found
           </p>
-        ))}
+        )}
       </div>
     </div>
   );
