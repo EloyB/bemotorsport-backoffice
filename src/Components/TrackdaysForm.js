@@ -54,8 +54,57 @@ export default function TrackdaysForm() {
             onChange={() => setTrackday({ ...trackday, peugeot: !trackday.peugeot })}
           />
         </div>
+        <hr/>
+        <div className="px-2 space-y-3 sm:flex sm:space-y-0 sm:space-x-4">
+          <Checkbox
+            label="Racelicentie vereist"
+            value={trackday.raceLicention}
+            onChange={() =>
+              setTrackday({
+                ...trackday,
+                raceLicention: !trackday.raceLicention,
+              })
+            }
+          />
+          <Checkbox
+            label="Ervaring vereist"
+            value={trackday.experienceRequired}
+            onChange={() =>
+              setTrackday({
+                ...trackday,
+                experienceRequired: !trackday.experienceRequired,
+              })
+            }
+          />
+        </div>
+        <hr/>
+        <div className="px-2 space-y-3 sm:flex sm:space-y-0 sm:space-x-4">
+          <Checkbox
+            label="Renting"
+            value={trackday.renting}
+            onChange={() =>
+              setTrackday({ ...trackday, renting: !trackday.renting })
+            }
+          />
+          <Checkbox
+            label="VIP"
+            value={trackday.VIP}
+            onChange={() => setTrackday({ ...trackday, VIP: !trackday.VIP })}
+          />
+          <Checkbox
+            label="Share a ride"
+            value={trackday.shareARide}
+            onChange={() => setTrackday({ ...trackday, shareARide: !trackday.shareARide })}
+          />
+                    <Checkbox
+            label="Business Experience"
+            value={trackday.businessExprecience}
+            onChange={() => setTrackday({ ...trackday, businessExprecience: !trackday.businessExprecience })}
+          />
+        </div>
         <BlueButton text={loading ? "Loading..." : "Add Trackday"} onClick={handleAddTrackday} />
         {hasErrors && <Message onClose={() => setHasErrors(false)} />}
+
       </div>
     </div>
   );
