@@ -1,10 +1,10 @@
 import React from "react";
 
-export default function InputField({ placeholder, onChange, value }) {
+export default function InputField({ placeholder, onChange, value, password }) {
   return (
     <div>
       <input
-        type="text"
+        type={password ? "password" : "text"}
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}

@@ -1,4 +1,3 @@
-import { countries } from "countries-list";
 import React from "react";
 import { ReactComponent as DeleteIcon } from "../Assets/delete.svg";
 import { removeTrackday } from "../Data/TrackdaysData";
