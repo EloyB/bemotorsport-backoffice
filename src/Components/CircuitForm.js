@@ -16,18 +16,13 @@ export default function CircuitForm() {
   const [imageFile, setImageFile] = useState({});
   const [hasErrors, setHasErrors] = useState(false);
   const [loading, setLoading] = useState();
+  const [fileList, setFileList] = useState([]);
 
   const handleAddCircuit = () => {
-    if (
-      circuit.name !== "" &&
-      circuit.country !== null &&
-      circuit.city !== "" &&
-      checkHasFile(pdfFile)
-    ) {
+    if (circuit.name !== "" && circuit.country !== null && circuit.city !== "") {
       setLoading(true);
-      setPdfFile({});
-      setImageFile({});
-      addCircuit(circuit, pdfFile, imageFile).then((res) => {
+      setFileList([]);
+      addCircuit(circuit, fileList).then((res) => {
         dispatch({ type: "ADD_CIRCUIT", item: res });
         setCircuit({ ...initialCircuit });
         setLoading(false);
@@ -37,8 +32,17 @@ export default function CircuitForm() {
     }
   };
 
-  const checkHasFile = (object) => {
-    return Object.keys(object).length > 0;
+  const handleFileSelect = (file) => {
+    const itemIndex = fileList.findIndex((x) => x.name === file.name);
+    if (itemIndex > -1) {
+      console.log("file already exists");
+      return;
+    }
+    setFileList([...fileList, file]);
+  };
+
+  const checkHasFile = (name) => {
+    return fileList.findIndex((x) => x.name === name) > -1;
   };
 
   return (
@@ -60,18 +64,59 @@ export default function CircuitForm() {
           onChange={(value) => setCircuit({ ...circuit, city: value })}
           value={circuit.city}
         />
+        <h1 className="font-semibold text-gray-400 text-base mb-3">Porsche</h1>
         <div className="w-full flex space-x-4 rounded">
           <DocumentInput
-            title="Choose PDF"
+            title="Renting PDF"
             accept=".pdf"
-            onFileChange={(val) => setPdfFile(val)}
-            hasFile={Object.keys(pdfFile).length > 0}
+            onFileChange={(val) =>
+              handleFileSelect({ val, name: "Porsche Renting", path: "offertes" })
+            }
+            hasFile={checkHasFile("Porsche Renting")}
           />
           <DocumentInput
-            title="Choose Image"
+            title="Share a ride PDF"
+            accept=".pdf"
+            onFileChange={(val) =>
+              handleFileSelect({ val, name: "Porsche Share a ride", path: "offertes" })
+            }
+            hasFile={checkHasFile("Porsche Share a ride")}
+          />
+        </div>
+        <h1 className="font-semibold text-gray-400 text-base mb-3">Peugeot</h1>
+        <div className="w-full flex space-x-4 rounded">
+          <DocumentInput
+            title="Renting PDF"
+            accept=".pdf"
+            onFileChange={(val) =>
+              handleFileSelect({ val, name: "Peugeot Renting", path: "offertes" })
+            }
+            hasFile={checkHasFile("Peugeot Renting")}
+          />
+          <DocumentInput
+            title="Share a ride PDF"
+            accept=".pdf"
+            onFileChange={(val) =>
+              handleFileSelect({ val, name: "Peugeot Share a ride", path: "offertes" })
+            }
+            hasFile={checkHasFile("Peugeot Share a ride")}
+          />
+        </div>
+        <h1 className="font-semibold text-gray-400 text-base mb-3">Others</h1>
+        <div className="w-full flex space-x-4 rounded">
+          <DocumentInput
+            title="Beginner PDF"
+            accept=".pdf"
+            onFileChange={(val) => handleFileSelect({ val, name: "Beginner", path: "offertes" })}
+            hasFile={checkHasFile("Beginner")}
+          />
+          <DocumentInput
+            title="Circuit Image"
             accept="image/*"
-            onFileChange={(val) => setImageFile(val)}
-            hasFile={Object.keys(imageFile).length > 0}
+            onFileChange={(val) =>
+              handleFileSelect({ val, name: "Circuit Vector", path: "vectors" })
+            }
+            hasFile={checkHasFile("Circuit Vector")}
           />
         </div>
         <BlueButton text={loading ? "Loading..." : "Add Circuit"} onClick={handleAddCircuit} />
