@@ -1,4 +1,4 @@
-import { db, uploadFile } from "../firebase";
+import { db, uploadFileList } from "../firebase";
 
 const initialCircuit = {
   name: "",
@@ -6,20 +6,16 @@ const initialCircuit = {
   city: "",
 };
 
-const addCircuit = (circuit, pdfFile, imageFile) => {
+const addCircuit = (circuit, files) => {
   var promise = new Promise((resolve, reject) => {
-    uploadFile("offertes", circuit.name + "_Offerte", pdfFile[0]).then((url) => {
-      uploadFile("vectors", circuit.name + "_Vector", imageFile[0]).then((vectorURL) => {
-        db.collection("circuits").add({
-          ...circuit,
-          offerte: url,
-          vector: vectorURL,
-        });
-        resolve({
-          ...circuit,
-          offerte: url,
-          vector: vectorURL,
-        });
+    uploadFileList(circuit.name, files).then((res) => {
+      db.collection("circuits").add({
+        ...circuit,
+        files: res,
+      });
+      resolve({
+        ...circuit,
+        files: res,
       });
     });
   });

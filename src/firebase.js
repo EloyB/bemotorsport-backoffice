@@ -22,7 +22,17 @@ const uploadFile = async (path, name, file) => {
 
   const downloadURL = await uploadTaskSnapshot.ref.getDownloadURL();
 
-  return downloadURL;
+  return { name, downloadURL };
 };
 
-export { db, auth, uploadFile };
+const uploadFileList = async (circuitName, files) => {
+  const promises = [];
+
+  files.map((file) => {
+    promises.push(uploadFile(file.path, `${circuitName + "_" + file.name}`, file.val[0]));
+  });
+
+  return Promise.all(promises);
+};
+
+export { db, auth, uploadFile, uploadFileList };

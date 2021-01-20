@@ -6,6 +6,7 @@ const initialTrackday = {
   porsche: false,
   peugeot: false,
   available: true,
+  opmerking: "",
 };
 
 const addTrackday = (trackday) => {
