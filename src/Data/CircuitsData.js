@@ -2,9 +2,10 @@ import { db, uploadFileList } from "../firebase";
 
 const initialCircuit = {
   name: "",
-  country: null,
+  country: "",
   city: "",
   address: "",
+  files: []
 };
 
 const addCircuit = (circuit, coordinates, files) => {

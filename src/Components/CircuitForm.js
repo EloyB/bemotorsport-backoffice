@@ -10,11 +10,17 @@ import Geocode from "react-geocode";
 
 Geocode.setApiKey("AIzaSyDEhtd5WkvAj6oww-CoDmEK3IhfD8k7i_A");
 
-const countries = ["Belgium", "Germany", "France", "Netherlands", "Spain", "Portugal"];
+const countries = [
+  "Belgium",
+  "Germany",
+  "France",
+  "Netherlands",
+  "Spain",
+  "Portugal",
+];
 
 export default function CircuitForm() {
-  const [{ circuits }, dispatch] = useStateValue();
-  const [circuit, setCircuit] = useState({ ...initialCircuit });
+  const [{ circuit }, dispatch] = useStateValue();
   const [hasErrors, setHasErrors] = useState(false);
   const [loading, setLoading] = useState();
   const [fileList, setFileList] = useState([]);
@@ -23,7 +29,11 @@ export default function CircuitForm() {
   Geocode.setApiKey("AIzaSyDEhtd5WkvAj6oww-CoDmEK3IhfD8k7i_A");
 
   const handleAddCircuit = () => {
-    if (circuit.name !== "" && circuit.country !== null && circuit.city !== "") {
+    if (
+      circuit.name !== "" &&
+      circuit.country !== null &&
+      circuit.city !== ""
+    ) {
       setLoading(true);
       setFileList([]);
       Geocode.fromAddress(circuit.address)
@@ -34,7 +44,7 @@ export default function CircuitForm() {
         .then((res) => {
           addCircuit(circuit, res, fileList).then((res) => {
             dispatch({ type: "ADD_CIRCUIT", item: res });
-            setCircuit({ ...initialCircuit });
+            dispatch({ type: "RESET_CIRCUIT" });
             setLoading(false);
           });
         })
@@ -68,23 +78,31 @@ export default function CircuitForm() {
       <div className="my-2 space-y-3">
         <InputField
           placeholder="Circuit name"
-          onChange={(value) => setCircuit({ ...circuit, name: value })}
+          onChange={(value) =>
+            dispatch({ type: "UPDATE_CIRCUIT", prop: "name", value })
+          }
           value={circuit.name}
         />
         <DropdownField
           selectOptions={countries}
-          setSelectedOption={(item) => setCircuit({ ...circuit, country: item })}
+          setSelectedOption={(item) =>
+            dispatch({ type: "UPDATE_CIRCUIT", prop: "country", value: item })
+          }
           placeholder="Choose a country"
         />
         <InputField
           placeholder="City name"
-          onChange={(value) => setCircuit({ ...circuit, city: value })}
+          onChange={(value) =>
+            dispatch({ type: "UPDATE_CIRCUIT", prop: "city", value })
+          }
           value={circuit.city}
         />
         <h1 className="font-semibold text-gray-400 text-base mb-3">Address</h1>
         <InputField
           placeholder="Address"
-          onChange={(value) => setCircuit({ ...circuit, address: value })}
+          onChange={(value) =>
+            dispatch({ type: "UPDATE_CIRCUIT", prop: "address", value })
+          }
           value={circuit.address}
         />
         <h1 className="font-semibold text-gray-400 text-base mb-3">Porsche</h1>
@@ -93,7 +111,11 @@ export default function CircuitForm() {
             title="Renting PDF"
             accept=".pdf"
             onFileChange={(val) =>
-              handleFileSelect({ val, name: "Porsche Renting", path: "offertes" })
+              handleFileSelect({
+                val,
+                name: "Porsche Renting",
+                path: "offertes",
+              })
             }
             hasFile={checkHasFile("Porsche Renting")}
           />
@@ -101,7 +123,11 @@ export default function CircuitForm() {
             title="Share a ride PDF"
             accept=".pdf"
             onFileChange={(val) =>
-              handleFileSelect({ val, name: "Porsche Share a ride", path: "offertes" })
+              handleFileSelect({
+                val,
+                name: "Porsche Share a ride",
+                path: "offertes",
+              })
             }
             hasFile={checkHasFile("Porsche Share a ride")}
           />
@@ -112,7 +138,11 @@ export default function CircuitForm() {
             title="Renting PDF"
             accept=".pdf"
             onFileChange={(val) =>
-              handleFileSelect({ val, name: "Peugeot Renting", path: "offertes" })
+              handleFileSelect({
+                val,
+                name: "Peugeot Renting",
+                path: "offertes",
+              })
             }
             hasFile={checkHasFile("Peugeot Renting")}
           />
@@ -120,7 +150,11 @@ export default function CircuitForm() {
             title="Share a ride PDF"
             accept=".pdf"
             onFileChange={(val) =>
-              handleFileSelect({ val, name: "Peugeot Share a ride", path: "offertes" })
+              handleFileSelect({
+                val,
+                name: "Peugeot Share a ride",
+                path: "offertes",
+              })
             }
             hasFile={checkHasFile("Peugeot Share a ride")}
           />
@@ -130,7 +164,9 @@ export default function CircuitForm() {
           <DocumentInput
             title="Beginner PDF"
             accept=".pdf"
-            onFileChange={(val) => handleFileSelect({ val, name: "Beginner", path: "offertes" })}
+            onFileChange={(val) =>
+              handleFileSelect({ val, name: "Beginner", path: "offertes" })
+            }
             hasFile={checkHasFile("Beginner")}
           />
           <DocumentInput
@@ -142,8 +178,13 @@ export default function CircuitForm() {
             hasFile={checkHasFile("Circuit Vector")}
           />
         </div>
-        <BlueButton text={loading ? "Loading..." : "Add Circuit"} onClick={handleAddCircuit} />
-        {hasErrors && <Message onClose={() => setHasErrors(false)} message={message} />}
+        <BlueButton
+          text={loading ? "Loading..." : "Add Circuit"}
+          onClick={handleAddCircuit}
+        />
+        {hasErrors && (
+          <Message onClose={() => setHasErrors(false)} message={message} />
+        )}
       </div>
     </div>
   );
