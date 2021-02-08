@@ -6,36 +6,53 @@ import DocumentInput from "./DocumentInput";
 import { useStateValue } from "../StateProvider";
 import { initialCircuit, addCircuit } from "../Data/CircuitsData";
 import Message from "./Message";
+import Geocode from "react-geocode";
+
+Geocode.setApiKey("AIzaSyDEhtd5WkvAj6oww-CoDmEK3IhfD8k7i_A");
 
 const countries = ["Belgium", "Germany", "France", "Netherlands", "Spain", "Portugal"];
 
 export default function CircuitForm() {
   const [{ circuits }, dispatch] = useStateValue();
   const [circuit, setCircuit] = useState({ ...initialCircuit });
-  const [pdfFile, setPdfFile] = useState({});
-  const [imageFile, setImageFile] = useState({});
   const [hasErrors, setHasErrors] = useState(false);
   const [loading, setLoading] = useState();
   const [fileList, setFileList] = useState([]);
+  const [message, setMessage] = useState("");
+
+  Geocode.setApiKey("AIzaSyDEhtd5WkvAj6oww-CoDmEK3IhfD8k7i_A");
 
   const handleAddCircuit = () => {
     if (circuit.name !== "" && circuit.country !== null && circuit.city !== "") {
       setLoading(true);
       setFileList([]);
-      addCircuit(circuit, fileList).then((res) => {
-        dispatch({ type: "ADD_CIRCUIT", item: res });
-        setCircuit({ ...initialCircuit });
-        setLoading(false);
-      });
+      Geocode.fromAddress(circuit.address)
+        .then((response) => {
+          const { lat, lng } = response.results[0].geometry.location;
+          return { lat, lng };
+        })
+        .then((res) => {
+          addCircuit(circuit, res, fileList).then((res) => {
+            dispatch({ type: "ADD_CIRCUIT", item: res });
+            setCircuit({ ...initialCircuit });
+            setLoading(false);
+          });
+        })
+        .catch((err) => {
+          setLoading(false);
+          setHasErrors(true);
+          setMessage("Address does not exist.");
+        });
     } else {
       setHasErrors(true);
+      setMessage("Fill in all fields");
     }
   };
 
   const handleFileSelect = (file) => {
     const itemIndex = fileList.findIndex((x) => x.name === file.name);
     if (itemIndex > -1) {
-      console.log("file already exists");
+      fileList[itemIndex] = file;
       return;
     }
     setFileList([...fileList, file]);
@@ -63,6 +80,12 @@ export default function CircuitForm() {
           placeholder="City name"
           onChange={(value) => setCircuit({ ...circuit, city: value })}
           value={circuit.city}
+        />
+        <h1 className="font-semibold text-gray-400 text-base mb-3">Address</h1>
+        <InputField
+          placeholder="Address"
+          onChange={(value) => setCircuit({ ...circuit, address: value })}
+          value={circuit.address}
         />
         <h1 className="font-semibold text-gray-400 text-base mb-3">Porsche</h1>
         <div className="w-full flex space-x-4 rounded">
@@ -120,7 +143,7 @@ export default function CircuitForm() {
           />
         </div>
         <BlueButton text={loading ? "Loading..." : "Add Circuit"} onClick={handleAddCircuit} />
-        {hasErrors && <Message onClose={() => setHasErrors(false)} />}
+        {hasErrors && <Message onClose={() => setHasErrors(false)} message={message} />}
       </div>
     </div>
   );

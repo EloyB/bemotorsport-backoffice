@@ -14,11 +14,14 @@
     "autoprefixer": "^9.8.6",
     "firebase": "^8.2.1",
     "firebase-tools": "^9.1.0",
+    "geocoder": "^0.2.3",
     "moment": "^2.29.1",
+    "node-geocoder": "^3.27.0",
     "postcss": "^7.0.35",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-dropzone": "^11.2.4",
+    "react-geocode": "^0.2.2",
     "react-number-format": "^4.4.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
@@ -29,7 +32,8 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "craco build && firebase deploy"
   },
   "eslintConfig": {
     "extends": [

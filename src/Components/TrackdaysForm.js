@@ -57,21 +57,27 @@ export default function TrackdaysForm() {
               />
               <Checkbox
                 label="Racelicentie vereist"
-                value={trackday.raceLicention}
+                value={trackday.requirements.raceLicense}
                 onChange={() =>
                   setTrackday({
                     ...trackday,
-                    raceLicention: !trackday.raceLicention,
+                    requirements: {
+                      ...trackday.requirements,
+                      raceLicense: !trackday.requirements.raceLicense,
+                    },
                   })
                 }
               />
               <Checkbox
                 label="Ervaring vereist"
-                value={trackday.experienceRequired}
+                value={trackday.requirements.experience}
                 onChange={() =>
                   setTrackday({
                     ...trackday,
-                    experienceRequired: !trackday.experienceRequired,
+                    requirements: {
+                      ...trackday.requirements,
+                      experience: !trackday.requirements.experience,
+                    },
                   })
                 }
               />
@@ -82,13 +88,23 @@ export default function TrackdaysForm() {
             <div className="px-2 space-y-3 sm:flex sm:flex-col">
               <Checkbox
                 label="Porsche"
-                value={trackday.porsche}
-                onChange={() => setTrackday({ ...trackday, porsche: !trackday.porsche })}
+                value={trackday.cars.porsche}
+                onChange={() =>
+                  setTrackday({
+                    ...trackday,
+                    cars: { ...trackday.cars, porsche: !trackday.cars.porsche },
+                  })
+                }
               />
               <Checkbox
                 label="Peugeot"
-                value={trackday.peugeot}
-                onChange={() => setTrackday({ ...trackday, peugeot: !trackday.peugeot })}
+                value={trackday.cars.peugeot}
+                onChange={() =>
+                  setTrackday({
+                    ...trackday,
+                    cars: { ...trackday.cars, peugeot: !trackday.cars.peugeot },
+                  })
+                }
               />
             </div>
           </div>
@@ -97,24 +113,42 @@ export default function TrackdaysForm() {
             <div className="px-2 space-y-3 sm:flex sm:flex-col">
               <Checkbox
                 label="Renting"
-                value={trackday.renting}
-                onChange={() => setTrackday({ ...trackday, renting: !trackday.renting })}
-              />
-              <Checkbox
-                label="VIP"
-                value={trackday.VIP}
-                onChange={() => setTrackday({ ...trackday, VIP: !trackday.VIP })}
+                value={trackday.plans.renting}
+                onChange={() =>
+                  setTrackday({
+                    ...trackday,
+                    plans: { ...trackday.plans, renting: !trackday.plans.renting },
+                  })
+                }
               />
               <Checkbox
                 label="Share a ride"
-                value={trackday.shareARide}
-                onChange={() => setTrackday({ ...trackday, shareARide: !trackday.shareARide })}
+                value={trackday.plans.share}
+                onChange={() =>
+                  setTrackday({
+                    ...trackday,
+                    plans: { ...trackday.plans, share: !trackday.plans.share },
+                  })
+                }
               />
               <Checkbox
-                label="Business Experience"
-                value={trackday.businessExprecience}
+                label="VIP"
+                value={trackday.plans.vip}
                 onChange={() =>
-                  setTrackday({ ...trackday, businessExprecience: !trackday.businessExprecience })
+                  setTrackday({
+                    ...trackday,
+                    plans: { ...trackday.plans, vip: !trackday.plans.vip },
+                  })
+                }
+              />
+              <Checkbox
+                label="Business"
+                value={trackday.plans.business}
+                onChange={() =>
+                  setTrackday({
+                    ...trackday,
+                    plans: { ...trackday.plans, business: !trackday.plans.business },
+                  })
                 }
               />
             </div>

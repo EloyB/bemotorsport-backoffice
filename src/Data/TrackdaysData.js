@@ -3,8 +3,9 @@ import { db } from "../firebase";
 const initialTrackday = {
   circuit: null,
   date: null,
-  porsche: false,
-  peugeot: false,
+  cars: { porsche: false, peugeot: false },
+  plans: { renting: false, share: false, vip: false, business: false },
+  requirements: { raceLicense: false, experience: false },
   available: true,
   opmerking: "",
 };

@@ -6,7 +6,9 @@ import { useStateValue } from "../StateProvider";
 export default function CircuitItem({ id, name, city, country }) {
   const [{ circuits }, dispatch] = useStateValue();
   const handleDeleteCircuit = () => {
-    removeCircuit(id).then(() => dispatch({ type: "DELETE_CIRCUIT", id: id }));
+    removeCircuit(id).then(() => {
+      dispatch({ type: "DELETE_CIRCUIT", id: id });
+    });
   };
 
   return (
