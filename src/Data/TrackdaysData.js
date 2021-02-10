@@ -1,7 +1,7 @@
 import { db } from "../firebase";
 
 const initialTrackday = {
-  circuit: null,
+  circuit: { name: "" },
   date: null,
   cars: { porsche: false, peugeot: false },
   plans: { renting: false, share: false, vip: false, business: false },

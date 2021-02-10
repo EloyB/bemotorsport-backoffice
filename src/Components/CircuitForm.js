@@ -4,20 +4,13 @@ import InputField from "./InputField";
 import BlueButton from "./BlueButton";
 import DocumentInput from "./DocumentInput";
 import { useStateValue } from "../StateProvider";
-import { initialCircuit, addCircuit } from "../Data/CircuitsData";
+import { addCircuit, updateCircuit } from "../Data/CircuitsData";
 import Message from "./Message";
 import Geocode from "react-geocode";
 
 Geocode.setApiKey("AIzaSyDEhtd5WkvAj6oww-CoDmEK3IhfD8k7i_A");
 
-const countries = [
-  "Belgium",
-  "Germany",
-  "France",
-  "Netherlands",
-  "Spain",
-  "Portugal",
-];
+const countries = ["Belgium", "Germany", "France", "Netherlands", "Spain", "Portugal"];
 
 export default function CircuitForm() {
   const [{ circuit }, dispatch] = useStateValue();
@@ -29,11 +22,7 @@ export default function CircuitForm() {
   Geocode.setApiKey("AIzaSyDEhtd5WkvAj6oww-CoDmEK3IhfD8k7i_A");
 
   const handleAddCircuit = () => {
-    if (
-      circuit.name !== "" &&
-      circuit.country !== null &&
-      circuit.city !== ""
-    ) {
+    if (circuit.name !== "" && circuit.country !== null && circuit.city !== "") {
       setLoading(true);
       setFileList([]);
       Geocode.fromAddress(circuit.address)
@@ -42,11 +31,15 @@ export default function CircuitForm() {
           return { lat, lng };
         })
         .then((res) => {
-          addCircuit(circuit, res, fileList).then((res) => {
-            dispatch({ type: "ADD_CIRCUIT", item: res });
-            dispatch({ type: "RESET_CIRCUIT" });
-            setLoading(false);
-          });
+          if (circuit.id === undefined || circuit.id === null) {
+            addCircuit(circuit, res, fileList).then((res) => {
+              dispatch({ type: "ADD_CIRCUIT", item: res });
+            });
+          } else {
+            updateCircuit(circuit, fileList);
+          }
+          dispatch({ type: "RESET_CIRCUIT" });
+          setLoading(false);
         })
         .catch((err) => {
           setLoading(false);
@@ -78,9 +71,7 @@ export default function CircuitForm() {
       <div className="my-2 space-y-3">
         <InputField
           placeholder="Circuit name"
-          onChange={(value) =>
-            dispatch({ type: "UPDATE_CIRCUIT", prop: "name", value })
-          }
+          onChange={(value) => dispatch({ type: "UPDATE_CIRCUIT", prop: "name", value })}
           value={circuit.name}
         />
         <DropdownField
@@ -89,20 +80,17 @@ export default function CircuitForm() {
             dispatch({ type: "UPDATE_CIRCUIT", prop: "country", value: item })
           }
           placeholder="Choose a country"
+          value={circuit.country}
         />
         <InputField
           placeholder="City name"
-          onChange={(value) =>
-            dispatch({ type: "UPDATE_CIRCUIT", prop: "city", value })
-          }
+          onChange={(value) => dispatch({ type: "UPDATE_CIRCUIT", prop: "city", value })}
           value={circuit.city}
         />
         <h1 className="font-semibold text-gray-400 text-base mb-3">Address</h1>
         <InputField
           placeholder="Address"
-          onChange={(value) =>
-            dispatch({ type: "UPDATE_CIRCUIT", prop: "address", value })
-          }
+          onChange={(value) => dispatch({ type: "UPDATE_CIRCUIT", prop: "address", value })}
           value={circuit.address}
         />
         <h1 className="font-semibold text-gray-400 text-base mb-3">Porsche</h1>
@@ -164,9 +152,7 @@ export default function CircuitForm() {
           <DocumentInput
             title="Beginner PDF"
             accept=".pdf"
-            onFileChange={(val) =>
-              handleFileSelect({ val, name: "Beginner", path: "offertes" })
-            }
+            onFileChange={(val) => handleFileSelect({ val, name: "Beginner", path: "offertes" })}
             hasFile={checkHasFile("Beginner")}
           />
           <DocumentInput
@@ -178,13 +164,8 @@ export default function CircuitForm() {
             hasFile={checkHasFile("Circuit Vector")}
           />
         </div>
-        <BlueButton
-          text={loading ? "Loading..." : "Add Circuit"}
-          onClick={handleAddCircuit}
-        />
-        {hasErrors && (
-          <Message onClose={() => setHasErrors(false)} message={message} />
-        )}
+        <BlueButton text={loading ? "Loading..." : "Add Circuit"} onClick={handleAddCircuit} />
+        {hasErrors && <Message onClose={() => setHasErrors(false)} message={message} />}
       </div>
     </div>
   );

@@ -21,6 +21,12 @@ const reducer = (state, action) => {
         circuits: action.list,
       };
 
+    case "EDIT_CIRCUIT":
+      return {
+        ...state,
+        circuit: { ...action.circuit },
+      };
+
     case "UPDATE_CIRCUIT":
       return {
         ...state,
@@ -38,7 +44,7 @@ const reducer = (state, action) => {
       const updatedCircuits = [...state.circuits];
       updatedCircuits.splice(circuitIndex, 1);
       return { ...state, circuits: updatedCircuits };
-      
+
     // TRACKDAYS
     case "ADD_TRACKDAY":
       return {
@@ -53,9 +59,7 @@ const reducer = (state, action) => {
       };
 
     case "DELETE_TRACKDAY":
-      const trackdayIndex = state.trackdays.findIndex(
-        (x) => x.id === action.id
-      );
+      const trackdayIndex = state.trackdays.findIndex((x) => x.id === action.id);
       const updatedTrackdays = [...state.trackdays];
       updatedTrackdays.splice(trackdayIndex, 1);
       return { ...state, trackdays: updatedTrackdays };

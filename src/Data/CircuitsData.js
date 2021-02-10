@@ -5,22 +5,40 @@ const initialCircuit = {
   country: "",
   city: "",
   address: "",
-  files: []
+  files: {},
 };
 
 const addCircuit = (circuit, coordinates, files) => {
   var promise = new Promise((resolve, reject) => {
     uploadFileList(circuit.name, files).then((res) => {
-      db.collection("circuits").add({
-        ...circuit,
-        coordinates,
-        files: res,
-      });
-      resolve({
-        ...circuit,
-        coordinates,
-        files: res,
-      });
+      db.collection("circuits")
+        .add({
+          ...circuit,
+          coordinates,
+          files: res,
+        })
+        .then((res) => {
+          resolve({
+            ...circuit,
+            id: res.id,
+            coordinates,
+            files: res,
+          });
+        });
+    });
+  });
+
+  return promise;
+};
+
+const updateCircuit = (circuit, files) => {
+  var promise = new Promise((resolve, reject) => {
+    uploadFileList(circuit.name, files).then((res) => {
+      db.collection("circuits")
+        .doc(circuit.id)
+        .update({
+          ...circuit,
+        });
     });
   });
 
@@ -39,4 +57,4 @@ const removeCircuit = (id) => {
   return promise;
 };
 
-export { initialCircuit, addCircuit, removeCircuit };
+export { initialCircuit, addCircuit, removeCircuit, updateCircuit };

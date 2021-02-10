@@ -37,6 +37,7 @@ export default function TrackdaysForm() {
           setSelectedOption={(item) => setTrackday({ ...trackday, circuit: item })}
           placeholder="Choose a circuit"
           targetField="name"
+          value={trackday.circuit.name}
         />
         <DatePicker onChange={(value) => setTrackday({ ...trackday, date: value })} />
         <div>

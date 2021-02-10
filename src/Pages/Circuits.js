@@ -12,15 +12,7 @@ export default function Circuits() {
         <h1 className="font-semibold text-xl mb-3 md:text-2xl">Alle Circuits</h1>
         <div className="space-y-2">
           {circuits.length > 0 ? (
-            circuits.map((item, index) => (
-              <CircuitItem
-                key={index}
-                id={item.id}
-                name={item.name}
-                country={item.country}
-                city={item.city}
-              />
-            ))
+            circuits.map((item, index) => <CircuitItem key={index} id={item.id} circuit={item} />)
           ) : (
             <p>No circuits yet. Fill in the form to add one.</p>
           )}

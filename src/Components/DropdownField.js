@@ -6,6 +6,7 @@ export default function DropdownField({
   setSelectedOption,
   targetField,
   placeholder,
+  value,
 }) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(null);
@@ -16,7 +17,9 @@ export default function DropdownField({
         className="p-2 bg-gray-50 w-full rounded px-4 flex justify-between items-center"
         onClick={() => setOpen(!open)}
       >
-        {selected === null ? (
+        {value !== "" ? (
+          <p className="text-gray-800">{value}</p>
+        ) : selected === null ? (
           <p className="text-gray-400">{placeholder}</p>
         ) : (
           <p className="text-gray-800">{selected}</p>
