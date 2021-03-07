@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
 
-export default function DatePicker({ onChange }) {
+export default function DatePicker({ onChange, value }) {
   const [isDate, setIsDate] = useState(true);
 
   useEffect(() => {
@@ -18,6 +18,7 @@ export default function DatePicker({ onChange }) {
           className="p-2 bg-gray-50 w-full rounded pl-4 outline-none"
           onChange={(e) => onChange(e.target.value)}
           placeholder="Date (dd-mm-yyyy)"
+          value={value}
         />
       ) : (
         <NumberFormat

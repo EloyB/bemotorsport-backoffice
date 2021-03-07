@@ -2,7 +2,7 @@ import { db } from "../firebase";
 
 const initialTrackday = {
   circuit: { name: "" },
-  date: null,
+  date: "",
   cars: { porsche: false, peugeot: false },
   plans: { renting: false, share: false, vip: false, business: false },
   requirements: { raceLicense: false, experience: false },
@@ -14,6 +14,17 @@ const addTrackday = (trackday) => {
   const promise = new Promise((resolve, reject) => {
     db.collection("trackdays")
       .add({ ...trackday })
+      .then(() => resolve(trackday));
+  });
+
+  return promise;
+};
+
+const updateTrackday = (trackday) => {
+  const promise = new Promise((resolve, reject) => {
+    db.collection("trackdays")
+      .doc(trackday.id)
+      .update({ ...trackday })
       .then(() => resolve(trackday));
   });
 
@@ -46,4 +57,4 @@ const removeTrackday = (id) => {
   return promise;
 };
 
-export { initialTrackday, addTrackday, getTrackdays, removeTrackday };
+export { initialTrackday, addTrackday, getTrackdays, removeTrackday, updateTrackday };

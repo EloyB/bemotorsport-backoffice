@@ -5,7 +5,6 @@ const initialCircuit = {
   country: "",
   city: "",
   address: "",
-  files: {},
 };
 
 const addCircuit = (circuit, coordinates, files) => {
@@ -34,10 +33,29 @@ const addCircuit = (circuit, coordinates, files) => {
 const updateCircuit = (circuit, files) => {
   var promise = new Promise((resolve, reject) => {
     uploadFileList(circuit.name, files).then((res) => {
+      if (circuit.files.length > 0) {
+        for (let i = 0; i < res.length; i++) {
+          const index = circuit.files.findIndex(
+            (x) => x.car === res[i].car && x.plan === res[i].plan && x.language === res[i].language
+          );
+
+          if (index > -1) {
+            circuit.files[index] = { ...res[i] };
+          } else {
+            circuit.files.push(res[i]);
+          }
+        }
+      } else {
+        circuit.files = res;
+      }
+
       db.collection("circuits")
         .doc(circuit.id)
         .update({
           ...circuit,
+        })
+        .then(() => {
+          resolve({ ...circuit });
         });
     });
   });

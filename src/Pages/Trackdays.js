@@ -19,16 +19,7 @@ export default function Trackdays() {
       <div className="py-4 md:w-1/2 md:px-4 space-y-4">
         <h1 className="font-semibold text-xl mb-3 md:text-2xl">Alle Trackdays</h1>
         {trackdays.length > 0 ? (
-          trackdays.map((item, index) => (
-            <TrackdayItem
-              key={index}
-              circuitName={item.circuit.name}
-              country={item.circuit.country}
-              city={item.circuit.city}
-              date={item.date}
-              id={item.id}
-            />
-          ))
+          trackdays.map((item, index) => <TrackdayItem key={index} trackday={item} />)
         ) : (
           <p>No trackdays yet. Fill in the form to add one.</p>
         )}

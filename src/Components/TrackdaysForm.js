@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useStateValue } from "../StateProvider";
-import { initialTrackday, addTrackday } from "../Data/TrackdaysData";
+import { initialTrackday, addTrackday, updateTrackday } from "../Data/TrackdaysData";
 import DropdownField from "./DropdownField";
 import DatePicker from "./DatePicker";
 import Checkbox from "./Checkbox";
@@ -10,19 +10,24 @@ import TextArea from "./TextArea";
 import InputField from "./InputField";
 
 export default function TrackdaysForm() {
-  const [{ circuits }, dispatch] = useStateValue();
-  const [trackday, setTrackday] = useState({ ...initialTrackday });
+  const [{ circuits, trackday }, dispatch] = useStateValue();
   const [hasErrors, setHasErrors] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleAddTrackday = () => {
     if (trackday.circuit !== null && trackday.date !== null) {
       setLoading(true);
-      addTrackday(trackday).then((res) => {
-        dispatch({ type: "ADD_TRACKDAY", item: res });
-        setTrackday({ ...initialTrackday });
-        setLoading(false);
-      });
+      if (trackday.id === undefined || trackday.id === null) {
+        addTrackday(trackday).then((res) => {
+          dispatch({ type: "ADD_TRACKDAY", item: res });
+        });
+      } else {
+        updateTrackday(trackday).then((res) => {
+          dispatch({ type: "UPDATE_TRACKDAYS", trackday: res });
+        });
+      }
+      dispatch({ type: "RESET_TRACKDAY" });
+      setLoading(false);
     } else {
       setHasErrors(true);
     }
@@ -34,16 +39,21 @@ export default function TrackdaysForm() {
       <div className="my-3 space-y-6">
         <DropdownField
           selectOptions={circuits}
-          setSelectedOption={(item) => setTrackday({ ...trackday, circuit: item })}
+          setSelectedOption={(item) =>
+            dispatch({ type: "UPDATE_TRACKDAY", prop: "circuit", value: item })
+          }
           placeholder="Choose a circuit"
           targetField="name"
           value={trackday.circuit.name}
         />
-        <DatePicker onChange={(value) => setTrackday({ ...trackday, date: value })} />
+        <DatePicker
+          onChange={(value) => dispatch({ type: "UPDATE_TRACKDAY", prop: "date", value })}
+          value={trackday.date}
+        />
         <div>
           <TextArea
             placeholder="Opmerking"
-            onChange={(value) => setTrackday({ ...trackday, opmerking: value })}
+            onChange={(value) => dispatch({ type: "UPDATE_TRACKDAY", prop: "opmerking", value })}
             value={trackday.opmerking}
           />
         </div>
@@ -54,15 +64,22 @@ export default function TrackdaysForm() {
               <Checkbox
                 label="Available"
                 value={trackday.available}
-                onChange={() => setTrackday({ ...trackday, available: !trackday.available })}
+                onChange={() =>
+                  dispatch({
+                    type: "UPDATE_TRACKDAY",
+                    prop: "available",
+                    value: !trackday.available,
+                  })
+                }
               />
               <Checkbox
                 label="Racelicentie vereist"
                 value={trackday.requirements.raceLicense}
                 onChange={() =>
-                  setTrackday({
-                    ...trackday,
-                    requirements: {
+                  dispatch({
+                    type: "UPDATE_TRACKDAY",
+                    prop: "requirements",
+                    value: {
                       ...trackday.requirements,
                       raceLicense: !trackday.requirements.raceLicense,
                     },
@@ -73,9 +90,10 @@ export default function TrackdaysForm() {
                 label="Ervaring vereist"
                 value={trackday.requirements.experience}
                 onChange={() =>
-                  setTrackday({
-                    ...trackday,
-                    requirements: {
+                  dispatch({
+                    type: "UPDATE_TRACKDAY",
+                    prop: "requirements",
+                    value: {
                       ...trackday.requirements,
                       experience: !trackday.requirements.experience,
                     },
@@ -91,9 +109,13 @@ export default function TrackdaysForm() {
                 label="Porsche"
                 value={trackday.cars.porsche}
                 onChange={() =>
-                  setTrackday({
-                    ...trackday,
-                    cars: { ...trackday.cars, porsche: !trackday.cars.porsche },
+                  dispatch({
+                    type: "UPDATE_TRACKDAY",
+                    prop: "cars",
+                    value: {
+                      ...trackday.cars,
+                      porsche: !trackday.cars.porsche,
+                    },
                   })
                 }
               />
@@ -101,9 +123,13 @@ export default function TrackdaysForm() {
                 label="Peugeot"
                 value={trackday.cars.peugeot}
                 onChange={() =>
-                  setTrackday({
-                    ...trackday,
-                    cars: { ...trackday.cars, peugeot: !trackday.cars.peugeot },
+                  dispatch({
+                    type: "UPDATE_TRACKDAY",
+                    prop: "cars",
+                    value: {
+                      ...trackday.cars,
+                      peugeot: !trackday.cars.peugeot,
+                    },
                   })
                 }
               />
@@ -116,9 +142,13 @@ export default function TrackdaysForm() {
                 label="Renting"
                 value={trackday.plans.renting}
                 onChange={() =>
-                  setTrackday({
-                    ...trackday,
-                    plans: { ...trackday.plans, renting: !trackday.plans.renting },
+                  dispatch({
+                    type: "UPDATE_TRACKDAY",
+                    prop: "plans",
+                    value: {
+                      ...trackday.plans,
+                      renting: !trackday.plans.renting,
+                    },
                   })
                 }
               />
@@ -126,9 +156,13 @@ export default function TrackdaysForm() {
                 label="Share a ride"
                 value={trackday.plans.share}
                 onChange={() =>
-                  setTrackday({
-                    ...trackday,
-                    plans: { ...trackday.plans, share: !trackday.plans.share },
+                  dispatch({
+                    type: "UPDATE_TRACKDAY",
+                    prop: "plans",
+                    value: {
+                      ...trackday.plans,
+                      share: !trackday.plans.share,
+                    },
                   })
                 }
               />
@@ -136,9 +170,13 @@ export default function TrackdaysForm() {
                 label="VIP"
                 value={trackday.plans.vip}
                 onChange={() =>
-                  setTrackday({
-                    ...trackday,
-                    plans: { ...trackday.plans, vip: !trackday.plans.vip },
+                  dispatch({
+                    type: "UPDATE_TRACKDAY",
+                    prop: "plans",
+                    value: {
+                      ...trackday.plans,
+                      vip: !trackday.plans.vip,
+                    },
                   })
                 }
               />
@@ -146,9 +184,13 @@ export default function TrackdaysForm() {
                 label="Business"
                 value={trackday.plans.business}
                 onChange={() =>
-                  setTrackday({
-                    ...trackday,
-                    plans: { ...trackday.plans, business: !trackday.plans.business },
+                  dispatch({
+                    type: "UPDATE_TRACKDAY",
+                    prop: "plans",
+                    value: {
+                      ...trackday.plans,
+                      business: !trackday.plans.business,
+                    },
                   })
                 }
               />

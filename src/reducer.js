@@ -1,7 +1,9 @@
 import { initialCircuit } from "./Data/CircuitsData";
+import { initialTrackday } from "./Data/TrackdaysData";
 
 export const initialState = {
   circuit: { ...initialCircuit },
+  trackday: { ...initialTrackday },
   circuits: [],
   trackdays: [],
 };
@@ -19,6 +21,15 @@ const reducer = (state, action) => {
       return {
         ...state,
         circuits: action.list,
+      };
+
+    case "UPDATE_CIRCUITS":
+      const index = state.circuits.findIndex((x) => x.id === action.circuit.id);
+      const currentCircuits = [...state.circuits];
+      currentCircuits[index] = { ...action.circuit };
+      return {
+        ...state,
+        circuits: currentCircuits,
       };
 
     case "EDIT_CIRCUIT":
@@ -58,11 +69,38 @@ const reducer = (state, action) => {
         trackdays: action.list,
       };
 
+    case "UPDATE_TRACKDAYS":
+      const updatedTrackdayIndex = state.trackdays.findIndex((x) => x.id === action.trackday.id);
+      const currentTrackdays = [...state.trackdays];
+      currentTrackdays[updatedTrackdayIndex] = { ...action.trackday };
+      return {
+        ...state,
+        trackdays: currentTrackdays,
+      };
+
     case "DELETE_TRACKDAY":
       const trackdayIndex = state.trackdays.findIndex((x) => x.id === action.id);
       const updatedTrackdays = [...state.trackdays];
       updatedTrackdays.splice(trackdayIndex, 1);
       return { ...state, trackdays: updatedTrackdays };
+
+    case "EDIT_TRACKDAY":
+      return {
+        ...state,
+        trackday: { ...action.trackday },
+      };
+
+    case "UPDATE_TRACKDAY":
+      return {
+        ...state,
+        trackday: { ...state.trackday, [action.prop]: action.value },
+      };
+
+    case "RESET_TRACKDAY":
+      return {
+        ...state,
+        trackday: { ...initialTrackday },
+      };
 
     default:
       return { ...state };

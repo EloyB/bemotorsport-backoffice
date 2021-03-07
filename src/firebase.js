@@ -24,21 +24,23 @@ const db = firebaseApp.firestore();
 const auth = firebase.auth();
 const storage = firebase.storage();
 
-const uploadFile = async (path, name, file) => {
-  const fileRef = storage.ref(`/${path}/${name}`);
+const uploadFile = async (file, circuitName) => {
+  const fileRef = storage.ref(
+    `/${file.path}/${file.car + file.plan + file.language + "_" + circuitName}`
+  );
 
-  const uploadTaskSnapshot = await fileRef.put(file);
+  const uploadTaskSnapshot = await fileRef.put(file.val[0]);
 
   const downloadURL = await uploadTaskSnapshot.ref.getDownloadURL();
 
-  return { name, downloadURL };
+  return { downloadURL, language: file.language, car: file.car, plan: file.plan };
 };
 
 const uploadFileList = async (circuitName, files) => {
   const promises = [];
 
   files.map((file) => {
-    promises.push(uploadFile(file.path, `${circuitName + "_" + file.name}`, file.val[0]));
+    promises.push(uploadFile(file, circuitName));
   });
 
   return Promise.all(promises);

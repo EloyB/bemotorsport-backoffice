@@ -36,7 +36,12 @@ export default function CircuitForm() {
               dispatch({ type: "ADD_CIRCUIT", item: res });
             });
           } else {
-            updateCircuit(circuit, fileList);
+            updateCircuit(circuit, fileList).then((res) => {
+              dispatch({
+                type: "UPDATE_CIRCUITS",
+                circuit: res,
+              });
+            });
           }
           dispatch({ type: "RESET_CIRCUIT" });
           setLoading(false);
@@ -52,17 +57,21 @@ export default function CircuitForm() {
     }
   };
 
-  const handleFileSelect = (file) => {
-    const itemIndex = fileList.findIndex((x) => x.name === file.name);
+  const handleFileSelect = (fileInfo) => {
+    const itemIndex = fileList.findIndex(
+      (x) => x.car === fileInfo.car && x.plan === fileInfo.plan && x.language === fileInfo.language
+    );
     if (itemIndex > -1) {
-      fileList[itemIndex] = file;
+      fileList[itemIndex] = fileInfo;
       return;
     }
-    setFileList([...fileList, file]);
+    setFileList([...fileList, fileInfo]);
   };
 
-  const checkHasFile = (name) => {
-    return fileList.findIndex((x) => x.name === name) > -1;
+  const checkHasFile = ({ car, plan, language }) => {
+    return (
+      fileList.findIndex((x) => x.car === car && x.plan === plan && x.language === language) > -1
+    );
   };
 
   return (
@@ -96,58 +105,126 @@ export default function CircuitForm() {
         <h1 className="font-semibold text-gray-400 text-base mb-3">Porsche</h1>
         <div className="w-full flex space-x-4 rounded">
           <DocumentInput
-            title="Renting PDF"
+            title="Renting PDF (NL)"
             accept=".pdf"
             onFileChange={(val) =>
               handleFileSelect({
                 val,
-                name: "Porsche Renting",
+                car: "Porsche",
+                language: "NL",
+                plan: "Renting",
                 path: "offertes",
               })
             }
-            hasFile={checkHasFile("Porsche Renting")}
+            hasFile={checkHasFile({ car: "Porsche", plan: "Renting", language: "NL" })}
           />
           <DocumentInput
-            title="Share a ride PDF"
+            title="Share a ride PDF (NL)"
             accept=".pdf"
             onFileChange={(val) =>
               handleFileSelect({
                 val,
-                name: "Porsche Share a ride",
+                car: "Porsche",
+                language: "NL",
+                plan: "Share",
                 path: "offertes",
               })
             }
-            hasFile={checkHasFile("Porsche Share a ride")}
+            hasFile={checkHasFile({ car: "Porsche", plan: "Share", language: "NL" })}
+          />
+        </div>
+        <div className="w-full flex space-x-4 rounded">
+          <DocumentInput
+            title="Renting PDF (ENG)"
+            accept=".pdf"
+            onFileChange={(val) =>
+              handleFileSelect({
+                val,
+                car: "Porsche",
+                language: "ENG",
+                plan: "Renting",
+                path: "offertes",
+              })
+            }
+            hasFile={checkHasFile({ car: "Porsche", plan: "Renting", language: "ENG" })}
+          />
+          <DocumentInput
+            title="Share a ride PDF (ENG)"
+            accept=".pdf"
+            onFileChange={(val) =>
+              handleFileSelect({
+                val,
+                car: "Porsche",
+                language: "ENG",
+                plan: "Share",
+                path: "offertes",
+              })
+            }
+            hasFile={checkHasFile({ car: "Porsche", plan: "Share", language: "ENG" })}
           />
         </div>
         <h1 className="font-semibold text-gray-400 text-base mb-3">Peugeot</h1>
         <div className="w-full flex space-x-4 rounded">
           <DocumentInput
-            title="Renting PDF"
+            title="Renting PDF (NL)"
             accept=".pdf"
             onFileChange={(val) =>
               handleFileSelect({
                 val,
-                name: "Peugeot Renting",
+                car: "Peugeot",
+                language: "NL",
+                plan: "Renting",
                 path: "offertes",
               })
             }
-            hasFile={checkHasFile("Peugeot Renting")}
+            hasFile={checkHasFile({ car: "Peugeot", plan: "Renting", language: "NL" })}
           />
           <DocumentInput
-            title="Share a ride PDF"
+            title="Share a ride PDF (NL)"
             accept=".pdf"
             onFileChange={(val) =>
               handleFileSelect({
                 val,
-                name: "Peugeot Share a ride",
+                car: "Peugeot",
+                language: "NL",
+                plan: "Share",
                 path: "offertes",
               })
             }
-            hasFile={checkHasFile("Peugeot Share a ride")}
+            hasFile={checkHasFile({ car: "Peugeot", plan: "Share", language: "NL" })}
           />
         </div>
-        <h1 className="font-semibold text-gray-400 text-base mb-3">Others</h1>
+        <div className="w-full flex space-x-4 rounded">
+          <DocumentInput
+            title="Renting PDF (ENG)"
+            accept=".pdf"
+            onFileChange={(val) =>
+              handleFileSelect({
+                val,
+                car: "Peugeot",
+                language: "ENG",
+                plan: "Renting",
+                path: "offertes",
+              })
+            }
+            hasFile={checkHasFile({ car: "Peugeot", plan: "Renting", language: "ENG" })}
+          />
+          <DocumentInput
+            title="Share a ride PDF (ENG)"
+            accept=".pdf"
+            onFileChange={(val) =>
+              handleFileSelect({
+                val,
+                car: "Peugeot",
+                language: "ENG",
+                plan: "Share",
+                path: "offertes",
+              })
+            }
+            hasFile={checkHasFile({ car: "Peugeot", plan: "Share", language: "ENG" })}
+          />
+        </div>
+        {/* <h1 className="font-semibold text-gray-400 text-base mb-3">Others</h1>
         <div className="w-full flex space-x-4 rounded">
           <DocumentInput
             title="Beginner PDF"
@@ -163,7 +240,7 @@ export default function CircuitForm() {
             }
             hasFile={checkHasFile("Circuit Vector")}
           />
-        </div>
+        </div> */}
         <BlueButton text={loading ? "Loading..." : "Add Circuit"} onClick={handleAddCircuit} />
         {hasErrors && <Message onClose={() => setHasErrors(false)} message={message} />}
       </div>
