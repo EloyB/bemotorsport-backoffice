@@ -1,3 +1,4 @@
+import moment from "moment";
 import React from "react";
 import { ReactComponent as DeleteIcon } from "../Assets/delete.svg";
 import { removeTrackday } from "../Data/TrackdaysData";
@@ -18,7 +19,9 @@ export default function TrackdayItem({ trackday }) {
           <p className="text-sm">
             {trackday.circuit.city} | {trackday.circuit.country}
           </p>
-          <p className="text-sm text-motorblue font-bold mt-3">{trackday.date}</p>
+          <p className="text-sm text-motorblue font-bold mt-3">
+            {moment(trackday.date).format("DD-MM-YYYY")}
+          </p>
         </div>
         <div className="flex space-x-2">
           <div

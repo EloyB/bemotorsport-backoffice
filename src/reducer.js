@@ -6,6 +6,7 @@ export const initialState = {
   trackday: { ...initialTrackday },
   circuits: [],
   trackdays: [],
+  filteredTrackdays: [],
 };
 
 const reducer = (state, action) => {
@@ -100,6 +101,16 @@ const reducer = (state, action) => {
       return {
         ...state,
         trackday: { ...initialTrackday },
+      };
+
+    case "FILTER_TRACKDAYS":
+      const filteredTrackdaysByCircuitId = state.trackdays.filter(
+        (x) => x.circuit.id === action.id
+      );
+      console.log(filteredTrackdaysByCircuitId);
+      return {
+        ...state,
+        filteredTrackdays: filteredTrackdaysByCircuitId,
       };
 
     default:

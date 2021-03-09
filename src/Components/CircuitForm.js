@@ -111,12 +111,12 @@ export default function CircuitForm() {
               handleFileSelect({
                 val,
                 car: "Porsche",
-                language: "NL",
+                language: "nl",
                 plan: "Renting",
                 path: "offertes",
               })
             }
-            hasFile={checkHasFile({ car: "Porsche", plan: "Renting", language: "NL" })}
+            hasFile={checkHasFile({ car: "Porsche", plan: "Renting", language: "nl" })}
           />
           <DocumentInput
             title="Share a ride PDF (NL)"
@@ -125,12 +125,12 @@ export default function CircuitForm() {
               handleFileSelect({
                 val,
                 car: "Porsche",
-                language: "NL",
+                language: "nl",
                 plan: "Share",
                 path: "offertes",
               })
             }
-            hasFile={checkHasFile({ car: "Porsche", plan: "Share", language: "NL" })}
+            hasFile={checkHasFile({ car: "Porsche", plan: "Share", language: "nl" })}
           />
         </div>
         <div className="w-full flex space-x-4 rounded">
@@ -141,12 +141,12 @@ export default function CircuitForm() {
               handleFileSelect({
                 val,
                 car: "Porsche",
-                language: "ENG",
+                language: "en-US",
                 plan: "Renting",
                 path: "offertes",
               })
             }
-            hasFile={checkHasFile({ car: "Porsche", plan: "Renting", language: "ENG" })}
+            hasFile={checkHasFile({ car: "Porsche", plan: "Renting", language: "en-US" })}
           />
           <DocumentInput
             title="Share a ride PDF (ENG)"
@@ -155,12 +155,12 @@ export default function CircuitForm() {
               handleFileSelect({
                 val,
                 car: "Porsche",
-                language: "ENG",
+                language: "en-US",
                 plan: "Share",
                 path: "offertes",
               })
             }
-            hasFile={checkHasFile({ car: "Porsche", plan: "Share", language: "ENG" })}
+            hasFile={checkHasFile({ car: "Porsche", plan: "Share", language: "en-US" })}
           />
         </div>
         <h1 className="font-semibold text-gray-400 text-base mb-3">Peugeot</h1>
@@ -172,12 +172,12 @@ export default function CircuitForm() {
               handleFileSelect({
                 val,
                 car: "Peugeot",
-                language: "NL",
+                language: "nl",
                 plan: "Renting",
                 path: "offertes",
               })
             }
-            hasFile={checkHasFile({ car: "Peugeot", plan: "Renting", language: "NL" })}
+            hasFile={checkHasFile({ car: "Peugeot", plan: "Renting", language: "nl" })}
           />
           <DocumentInput
             title="Share a ride PDF (NL)"
@@ -186,12 +186,12 @@ export default function CircuitForm() {
               handleFileSelect({
                 val,
                 car: "Peugeot",
-                language: "NL",
+                language: "nl",
                 plan: "Share",
                 path: "offertes",
               })
             }
-            hasFile={checkHasFile({ car: "Peugeot", plan: "Share", language: "NL" })}
+            hasFile={checkHasFile({ car: "Peugeot", plan: "Share", language: "nl" })}
           />
         </div>
         <div className="w-full flex space-x-4 rounded">
@@ -202,12 +202,12 @@ export default function CircuitForm() {
               handleFileSelect({
                 val,
                 car: "Peugeot",
-                language: "ENG",
+                language: "en-US",
                 plan: "Renting",
                 path: "offertes",
               })
             }
-            hasFile={checkHasFile({ car: "Peugeot", plan: "Renting", language: "ENG" })}
+            hasFile={checkHasFile({ car: "Peugeot", plan: "Renting", language: "en-US" })}
           />
           <DocumentInput
             title="Share a ride PDF (ENG)"
@@ -216,12 +216,12 @@ export default function CircuitForm() {
               handleFileSelect({
                 val,
                 car: "Peugeot",
-                language: "ENG",
+                language: "en-US",
                 plan: "Share",
                 path: "offertes",
               })
             }
-            hasFile={checkHasFile({ car: "Peugeot", plan: "Share", language: "ENG" })}
+            hasFile={checkHasFile({ car: "Peugeot", plan: "Share", language: "en-US" })}
           />
         </div>
         {/* <h1 className="font-semibold text-gray-400 text-base mb-3">Others</h1>
