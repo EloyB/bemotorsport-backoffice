@@ -7,6 +7,8 @@ export const initialState = {
   circuits: [],
   trackdays: [],
   filteredTrackdays: [],
+  requests: [],
+  selectedRequest: null,
 };
 
 const reducer = (state, action) => {
@@ -111,6 +113,19 @@ const reducer = (state, action) => {
       return {
         ...state,
         filteredTrackdays: filteredTrackdaysByCircuitId,
+      };
+
+    // Requests
+    case "SET_REQUESTS":
+      return {
+        ...state,
+        requests: action.list,
+      };
+
+    case "SET_SELECTED_REQUEST":
+      return {
+        ...state,
+        selectedRequest: action.request,
       };
 
     default:

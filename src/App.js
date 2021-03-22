@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { auth, db } from "./firebase";
 import Trackdays from "./Pages/Trackdays";
 import Login from "./Pages/Login";
+import Requests from "./Pages/Requests";
 
 function App() {
   const [{}, dispatch] = useStateValue();
@@ -51,6 +52,9 @@ function App() {
           <div className="lg:max-w-4xl lg:m-auto xl:max-w-5xl 2xl:max-w-screen-xl">
             <Navigation />
             <Switch>
+              <Route path="/requests">
+                <Requests />
+              </Route>
               <Route path="/circuits">
                 <Circuits />
               </Route>

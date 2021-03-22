@@ -43,6 +43,13 @@ export default function Navigation() {
             Trackdays
           </Link>
           <Link
+            onClick={handleCollapser}
+            to="/requests"
+            className="block sm:inline-block text-white font-semibold p-1 px-2 rounded hover:bg-blue-400 sm:text-gray-600 sm:hover:bg-white"
+          >
+            Requests
+          </Link>
+          <Link
             onClick={logoutUser}
             to="/login"
             className="block sm:inline-block text-white font-semibold p-1 px-2 rounded hover:bg-blue-400 sm:text-gray-600 sm:hover:bg-white"
