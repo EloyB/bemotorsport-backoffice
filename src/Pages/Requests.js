@@ -1,4 +1,5 @@
 import { ListItemSecondaryAction } from "@material-ui/core";
+import moment from "moment";
 import React, { useEffect } from "react";
 import { getRequests } from "../Data/RequestsData";
 import { useStateValue } from "../StateProvider";
@@ -6,7 +7,10 @@ import { useStateValue } from "../StateProvider";
 export default function Requests() {
   const [{ requests, selectedRequest }, dispatch] = useStateValue();
   useEffect(() => {
-    getRequests().then((res) => dispatch({ type: "SET_REQUESTS", list: res }));
+    getRequests().then((res) => {
+      res.sort((a, b) => b.creationDate.toDate() - a.creationDate.toDate());
+      dispatch({ type: "SET_REQUESTS", list: res });
+    });
   }, []);
 
   return (
@@ -25,6 +29,10 @@ export default function Requests() {
                 {item.firstName} {item.lastName}
               </p>
               <p className="text-sm">Selected Trackdays: {item.selectedTrackdays.length}</p>
+              <p className="text-sm">
+                Request date:{" "}
+                {moment(item.creationDate.toDate().toISOString()).format("DD-MM-YYYY")}
+              </p>
             </div>
             <div>
               <svg
@@ -87,7 +95,7 @@ export default function Requests() {
                     </p>
                     <p>
                       <span className="font-medium">needs instructor: </span>{" "}
-                      {item.instructorNeeded ? "YES" : "NO"}
+                      {item.instuctorNeeded ? "YES" : "NO"}
                     </p>
                   </div>
                 </div>

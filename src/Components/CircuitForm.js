@@ -8,8 +8,6 @@ import { addCircuit, updateCircuit } from "../Data/CircuitsData";
 import Message from "./Message";
 import Geocode from "react-geocode";
 
-Geocode.setApiKey("AIzaSyDEhtd5WkvAj6oww-CoDmEK3IhfD8k7i_A");
-
 const countries = ["Belgium", "Germany", "France", "Netherlands", "Spain", "Portugal"];
 
 export default function CircuitForm() {
@@ -19,7 +17,7 @@ export default function CircuitForm() {
   const [fileList, setFileList] = useState([]);
   const [message, setMessage] = useState("");
 
-  Geocode.setApiKey("AIzaSyDEhtd5WkvAj6oww-CoDmEK3IhfD8k7i_A");
+  Geocode.setApiKey("AIzaSyC4PK60hWqmr0dAxoqvmdLlsAdqRXyfzlo");
 
   const handleAddCircuit = () => {
     if (circuit.name !== "" && circuit.country !== null && circuit.city !== "") {
@@ -27,6 +25,7 @@ export default function CircuitForm() {
       setFileList([]);
       Geocode.fromAddress(circuit.address)
         .then((response) => {
+          console.log(response);
           const { lat, lng } = response.results[0].geometry.location;
           return { lat, lng };
         })
@@ -47,6 +46,7 @@ export default function CircuitForm() {
           setLoading(false);
         })
         .catch((err) => {
+          console.log(err);
           setLoading(false);
           setHasErrors(true);
           setMessage("Address does not exist.");
@@ -224,23 +224,36 @@ export default function CircuitForm() {
             hasFile={checkHasFile({ car: "Peugeot", plan: "Share", language: "en-US" })}
           />
         </div>
-        {/* <h1 className="font-semibold text-gray-400 text-base mb-3">Others</h1>
         <div className="w-full flex space-x-4 rounded">
           <DocumentInput
-            title="Beginner PDF"
+            title="Training PDF (NL)"
             accept=".pdf"
-            onFileChange={(val) => handleFileSelect({ val, name: "Beginner", path: "offertes" })}
-            hasFile={checkHasFile("Beginner")}
+            onFileChange={(val) =>
+              handleFileSelect({
+                val,
+                car: "Peugeot",
+                language: "nl",
+                plan: "Training",
+                path: "offertes",
+              })
+            }
+            hasFile={checkHasFile({ car: "Peugeot", plan: "Training", language: "nl" })}
           />
           <DocumentInput
-            title="Circuit Image"
-            accept="image/*"
+            title="Training PDF (ENG)"
+            accept=".pdf"
             onFileChange={(val) =>
-              handleFileSelect({ val, name: "Circuit Vector", path: "vectors" })
+              handleFileSelect({
+                val,
+                car: "Peugeot",
+                language: "en-US",
+                plan: "Training",
+                path: "offertes",
+              })
             }
-            hasFile={checkHasFile("Circuit Vector")}
+            hasFile={checkHasFile({ car: "Peugeot", plan: "Training", language: "en-US" })}
           />
-        </div> */}
+        </div>
         <BlueButton text={loading ? "Loading..." : "Add Circuit"} onClick={handleAddCircuit} />
         {hasErrors && <Message onClose={() => setHasErrors(false)} message={message} />}
       </div>

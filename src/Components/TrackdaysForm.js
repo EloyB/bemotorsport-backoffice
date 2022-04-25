@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useStateValue } from "../StateProvider";
 import { initialTrackday, addTrackday, updateTrackday } from "../Data/TrackdaysData";
 import DropdownField from "./DropdownField";
@@ -190,6 +190,20 @@ export default function TrackdaysForm() {
                     value: {
                       ...trackday.plans,
                       business: !trackday.plans.business,
+                    },
+                  })
+                }
+              />
+              <Checkbox
+                label="Training"
+                value={trackday.plans.training}
+                onChange={() =>
+                  dispatch({
+                    type: "UPDATE_TRACKDAY",
+                    prop: "plans",
+                    value: {
+                      ...trackday.plans,
+                      training: !trackday.plans.training,
                     },
                   })
                 }

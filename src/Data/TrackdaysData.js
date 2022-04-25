@@ -4,7 +4,7 @@ const initialTrackday = {
   circuit: { name: "" },
   date: "",
   cars: { porsche: false, peugeot: false },
-  plans: { renting: false, share: false, vip: false, business: false },
+  plans: { renting: false, share: false, vip: false, business: false, training: false },
   requirements: { raceLicense: false, experience: false },
   available: true,
   opmerking: "",

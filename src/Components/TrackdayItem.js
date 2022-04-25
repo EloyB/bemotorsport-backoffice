@@ -1,10 +1,11 @@
 import moment from "moment";
 import React from "react";
+import { forwardRef } from "react";
 import { ReactComponent as DeleteIcon } from "../Assets/delete.svg";
 import { removeTrackday } from "../Data/TrackdaysData";
 import { useStateValue } from "../StateProvider";
 
-export default function TrackdayItem({ trackday }) {
+const TrackdayItem = forwardRef(({ trackday }, ref) => {
   const [{ circuits }, dispatch] = useStateValue();
 
   const handleDeleteTrackday = () => {
@@ -26,12 +27,13 @@ export default function TrackdayItem({ trackday }) {
         <div className="flex space-x-2">
           <div
             className="cursor-pointer"
-            onClick={() =>
+            onClick={() => {
               dispatch({
                 type: "EDIT_TRACKDAY",
                 trackday,
-              })
-            }
+              });
+              ref.current.scrollIntoView({ behavior: "smooth" });
+            }}
           >
             <svg
               className="w-6 h-6 text-motorblue"
@@ -49,4 +51,6 @@ export default function TrackdayItem({ trackday }) {
       </div>
     </div>
   );
-}
+});
+
+export default TrackdayItem;
